@@ -31,6 +31,15 @@ const generateId = () => {
     return maxId + 1;
 }
 
+app.get('/info', (request, response) => {
+    const length = persons.length;
+    const currentDate = new Date();
+    //console.log(currentDate);
+    response.send(`<p>Phonebook has info for ${length} people <br/><br/>
+        ${currentDate}
+    </p>`)
+});
+
 app.get('/api/persons', (request, response) => {
     response.json(persons);
 });
@@ -47,13 +56,11 @@ app.get('/api/persons/:id', (request, response) => {
     }
 });
 
-app.get('/info', (request, response) => {
-    const length = persons.length;
-    const currentDate = new Date();
-    //console.log(currentDate);
-    response.send(`<p>Phonebook has info for ${length} people <br/><br/>
-        ${currentDate}
-    </p>`)
+app.delete('/api/persons/:id', (request, response) => {
+   const id = Number(request.params.id); 
+   persons = persons.filter(person => person.id !== id);
+
+   response.status(204).end();
 });
 
 const PORT = 3001;
