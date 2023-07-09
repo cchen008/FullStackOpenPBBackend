@@ -59,15 +59,25 @@ app.delete('/api/persons/:id', (request, response) => {
 });
 
 app.post('/api/persons', (request, response) => {
-    const body = request.body;
+    const newPerson = request.body;
+    const exist = persons.filter(person => person.name === newPerson.name);
 
-    if(!body.name) {
+    if(!newPerson.name) {
         return response.status(400).json({
-            error: 'name missing'
+            error: 'name is missing'
+        });
+    }
+    else if(exist.length > 0) {
+        return response.status(400).json({
+            error: 'name already exists'
+        })
+    }
+    if(!newPerson.number) {
+        return response.status(400).json({
+            error: 'number is missing'
         });
     }
     const id = Math.floor(Math.random() * 99999999);
-    const newPerson = body;
     newPerson.id = id;
     persons.push(newPerson);
 
