@@ -24,8 +24,24 @@ let persons = [
     }
 ];
 
+const generateId = () => {
+    const maxId = persons.length > 0
+        ? Math.max(...persons.map(person => person.id))
+        : 0;
+    return maxId + 1;
+}
+
 app.get('/api/persons', (request, response) => {
     response.json(persons);
+});
+
+app.get('/info', (request, response) => {
+    const length = persons.length;
+    const currentDate = new Date();
+    //console.log(currentDate);
+    response.send(`<p>Phonebook has info for ${length} people <br/><br/>
+        ${currentDate}
+    </p>`)
 });
 
 const PORT = 3001;
